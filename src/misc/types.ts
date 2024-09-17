@@ -1,24 +1,32 @@
-import {Dispatch, SetStateAction} from "react";
+import { Dispatch, SetStateAction } from "react";
 
 export interface IProject {
-    uid: number;
-    name: string;
-    participantsCount: number;
-    projectId: number
-    //Add time
+  id: number;
+  name: string;
+  participantsCount: number;
+  projectId: number;
+  //Add time
 }
 
-export interface IModalProps {open: boolean, setOpen: Dispatch<SetStateAction<boolean>>}
+
+
+export interface IModalProps {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  onClose: () => void;
+}
+
 
 export interface IAppState {
-    reserveProjects: IProject[]
-    projectsByDate: {[prop: string]: IProject[]}
-    calendar: {
-        startTime: Date
-        endTime: Date
-        startDate: Date
-        endDate: Date
-    }
-
+  projectsByDate: { reserve: IProject[]; [prop: string]: IProject[] };
+  calendar: {
+    startTime: Date;
+    endTime: Date;
+    startDate: Date;
+    endDate: Date;
+  };
 }
-export interface ITimeEditState {state: IAppState["calendar"], setState: Dispatch<IAppState['calendar']>}
+export interface IAppStateProps {
+  state: IAppState;
+  setState: Dispatch<IAppState>;
+}

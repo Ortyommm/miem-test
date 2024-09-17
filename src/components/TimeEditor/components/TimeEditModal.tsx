@@ -1,5 +1,5 @@
 import { StyledModal } from "../../StyledModal.tsx";
-import { IModalProps, ITimeEditState } from "../../../misc/types.ts";
+import { IAppStateProps, IModalProps } from "../../../misc/types.ts";
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
@@ -12,19 +12,22 @@ export function TimeEditModal({
   setOpen,
   state,
   setState,
-}: IModalProps & ITimeEditState) {
+  onClose,
+}: IModalProps & IAppStateProps) {
   const [showCalendar, setShowCalendar] = useState(false);
 
+  const { startTime, endTime, startDate, endDate } = state.calendar;
 
-  const { startTime, endTime, startDate, endDate } = state;
-
-  const onChange = (dates: [Date, Date]) => {
+  const onChange = (dates: [Date|null, Date|null]) => {
     const [start, end] = dates;
-    setState({ ...state, startDate: start, endDate: end });
+    setState({
+      ...state,
+      calendar: { ...state.calendar, startDate: start, endDate: end },
+    });
   };
 
   return (
-    <StyledModal open={open} setOpen={setOpen}>
+    <StyledModal open={open} setOpen={setOpen} onClose={onClose}>
       <Typography variant="h6">Редактирование графика работы</Typography>
       <Box>
         <Typography>Даты</Typography>
@@ -56,7 +59,7 @@ export function TimeEditModal({
             onChange={() =>
               setState({
                 ...state,
-                startTime,
+                calendar: { ...state.calendar, startTime },
               })
             }
           />
@@ -66,7 +69,7 @@ export function TimeEditModal({
             onChange={() =>
               setState({
                 ...state,
-                endTime,
+                calendar: { ...state.calendar, endTime },
               })
             }
           />

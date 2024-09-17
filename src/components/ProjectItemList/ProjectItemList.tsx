@@ -23,6 +23,7 @@ export function ProjectItemList({
 
     days.push(
       <DayView
+        droppableId={getStringByDate(currentDate)}
         key={getStringByDate(currentDate)}
         heading={format(currentDate, "dd LLL")}
         projects={state.projectsByDate[getStringByDate(currentDate)] || null}
@@ -32,7 +33,11 @@ export function ProjectItemList({
 
   return (
     <>
-      <DayView heading="Резервный список" projects={state.reserveProjects} />
+      <DayView
+        droppableId="reserve"
+        heading="Резервный список"
+        projects={state.projectsByDate.reserve}
+      />
       {days}
     </>
   );

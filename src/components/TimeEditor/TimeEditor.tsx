@@ -1,16 +1,46 @@
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Box, Button } from "@mui/material";
-import { useState} from "react";
+import { useState } from "react";
 import { TimeEditModal } from "./components/TimeEditModal.tsx";
-import { ITimeEditState} from "../../misc/types.ts";
+import { IAppStateProps } from "../../misc/types.ts";
+import { cloneDeep } from "lodash-es";
+import { addDays, isWithinInterval, parse } from "date-fns";
+import { uniqueDateFormat } from "../../misc/helpers.ts";
 
-export function TimeEditor({state, setState}: ITimeEditState) {
+export function TimeEditor({ state, setState }: IAppStateProps) {
   const [openTimeEditModal, setOpenTimeEditModal] = useState(false);
+
+  const onClose = () => {
+    setOpenTimeEditModal(false);
+    const stateCopy = cloneDeep(state);
+    Object.keys(stateCopy.projectsByDate).forEach((key) => {
+      if (key === "reserve") return;
+      if (
+        !isWithinInterval(parse(key, uniqueDateFormat, new Date()), {
+          start: addDays(state.calendar.startDate, -1),
+          end: addDays(state.calendar.endDate, +1),
+        })
+      ) {
+        stateCopy.projectsByDate.reserve = [
+          ...stateCopy.projectsByDate.reserve,
+          ...stateCopy.projectsByDate[key],
+        ];
+        stateCopy.projectsByDate[key] = [];
+      }
+    });
+    setState(stateCopy)
+  };
 
   return (
     <>
-      <TimeEditModal open={openTimeEditModal} setOpen={setOpenTimeEditModal} state={state} setState={setState} />
+      <TimeEditModal
+        open={openTimeEditModal}
+        setOpen={setOpenTimeEditModal}
+        state={state}
+        setState={setState}
+        onClose={onClose}
+      />
       <Box
         sx={{
           justifyContent: "center",
