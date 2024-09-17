@@ -18,7 +18,7 @@ export function ProjectItemList({
     }).days || 0;
 
   const days = [];
-  for (let i = 0; i < getDateDiff(); i++) {
+  for (let i = 0; i <= getDateDiff(); i++) {
     const currentDate = addDays(state.calendar.startDate, i);
 
     days.push(

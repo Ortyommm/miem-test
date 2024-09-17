@@ -14,12 +14,13 @@ export function TimeEditor({ state, setState }: IAppStateProps) {
   const onClose = () => {
     setOpenTimeEditModal(false);
     const stateCopy = cloneDeep(state);
+    //Перемещаем проект в резерв, если он проходит в день, не находящимся в диапазоне допустимых дней
     Object.keys(stateCopy.projectsByDate).forEach((key) => {
       if (key === "reserve") return;
       if (
         !isWithinInterval(parse(key, uniqueDateFormat, new Date()), {
           start: addDays(state.calendar.startDate, -1),
-          end: addDays(state.calendar.endDate, +1),
+          end: state.calendar.endDate,
         })
       ) {
         stateCopy.projectsByDate.reserve = [
