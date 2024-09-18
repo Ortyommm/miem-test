@@ -38,6 +38,9 @@ export function BreaksModal({
 
     setErrorMessage("");
 
+    setOpen(false);
+    setHours('0')
+    setMinutes('0')
     const stateCopy = cloneDeep(state);
     const { projectsByDate } = stateCopy;
     const key = getStringByDate(startDate);
