@@ -1,6 +1,6 @@
 import { IAppStateProps, IModalProps, ToggleSnackbarFunction } from "../../../misc/types.ts";
 import { StyledModal } from "../../StyledModal.tsx";
-import {Alert, Box, Button, TextField, Typography} from "@mui/material";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { DateSelector } from "../../DateSelector/DateSelector.tsx";
 import { cloneDeep } from "lodash-es";
@@ -13,11 +13,11 @@ export function BreaksModal({
   setState,
   toggleSnackbar,
 }: IModalProps & IAppStateProps & { toggleSnackbar: ToggleSnackbarFunction }) {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [errorMessage, setErrorMessage] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onChange = (date: Date | null) => {
-    setStartDate(date);
+    if (date) setStartDate(date);
   };
 
   const addBreak = () => {
@@ -77,9 +77,9 @@ export function BreaksModal({
         Добавить
       </Button>
       {errorMessage && (
-          <Alert sx={{ mt: 2 }} severity="error">
-            {errorMessage}
-          </Alert>
+        <Alert sx={{ mt: 2 }} severity="error">
+          {errorMessage}
+        </Alert>
       )}
     </StyledModal>
   );
