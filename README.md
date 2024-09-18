@@ -1,3 +1,17 @@
+# Description
+This is test task project for HSE University. 
+
+# How to run project
+My node version: 20.17.0. I also use yarn.
+
+`yarn` OR `npm i --force` (--force because I use yarn)
+
+`yarn dev` OR `npm run dev`
+
+That's all!
+
+---
+# Default README:
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
