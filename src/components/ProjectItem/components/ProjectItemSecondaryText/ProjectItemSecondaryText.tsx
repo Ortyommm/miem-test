@@ -9,6 +9,5 @@ export function ProjectItemSecondaryText({participantsCount}: {participantsCount
       >
         {participantsCount} {getSecondaryText(participantsCount)}
       </Typography>
-
   );
 }

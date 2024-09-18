@@ -1,5 +1,5 @@
-import {IBreak, IProject} from "../../../misc/types.ts";
 import {addMinutes} from "date-fns";
+import {IBreak, IProject} from "../../../../misc/types.ts";
 
 export const getProjectDuration = (participantsCount: number) =>
     20 + 5 * participantsCount;

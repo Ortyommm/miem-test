@@ -16,14 +16,15 @@ export function TimeEditModal({
 }: IModalProps & IAppStateProps & { toggleSnackbar: ToggleSnackbarFunction }) {
   const { startTime, endTime, startDate, endDate } = state.calendar;
 
-  const [localStartDate, setLocalStartDate] = useState<Date | null>(startDate);
-  const [localEndDate, setLocalEndDate] = useState<Date | null>(endDate);
-  const [localStartTime, setLocalStartTime] = useState<Date | null>(startTime);
-  const [localEndTime, setLocalEndTime] = useState<Date | null>(endTime);
+  const [localStartDate, setLocalStartDate] = useState<Date>(startDate);
+  const [localEndDate, setLocalEndDate] = useState<Date>(endDate);
+  const [localStartTime, setLocalStartTime] = useState<Date>(startTime);
+  const [localEndTime, setLocalEndTime] = useState<Date>(endTime);
   const [errorMessage, setErrorMessage] = useState("");
 
   const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
+    if (!start || !end) return;
     setLocalStartDate(start);
     setLocalEndDate(end);
   };
@@ -80,14 +81,14 @@ export function TimeEditModal({
           label="С"
           value={localStartTime}
           onChange={(date) => {
-            setLocalStartTime(date);
+            if (date) setLocalStartTime(date);
           }}
         />
         <TimeField
           label="До"
           value={localEndTime}
           onChange={(date) => {
-            setLocalEndTime(date);
+            if (date) setLocalEndTime(date);
           }}
         />
       </Box>
