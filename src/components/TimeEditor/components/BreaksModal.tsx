@@ -31,6 +31,11 @@ export function BreaksModal({
       return;
     }
 
+    if(+hours === 0 && +minutes === 0) {
+      setErrorMessage("Введите время");
+      return;
+    }
+
     if (!startDate) {
       setErrorMessage("Введите все поля");
       return;
