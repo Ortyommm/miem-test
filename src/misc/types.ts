@@ -1,13 +1,21 @@
 import { Dispatch, SetStateAction } from "react";
 
+export type DraggableType = 'project' | 'break'
+
 export interface IProject {
   id: number;
   name: string;
   participantsCount: number;
   projectId: number;
+  type: DraggableType
   //Add time
 }
 
+export interface IBreak {
+  id: number
+  duration: number
+  type: DraggableType
+}
 
 
 export interface IModalProps {
@@ -18,7 +26,7 @@ export interface IModalProps {
 
 
 export interface IAppState {
-  projectsByDate: { reserve: IProject[]; [prop: string]: IProject[] };
+  projectsByDate: { reserve: (IProject|IBreak)[]; [prop: string]: (IProject|IBreak)[] };
   calendar: {
     startTime: Date;
     endTime: Date;

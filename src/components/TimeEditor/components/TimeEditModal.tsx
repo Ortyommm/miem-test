@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import "react-datepicker/dist/react-datepicker.css";
 import { TimeField } from "@mui/x-date-pickers";
+import {DateSelector} from "../../DateSelector/DateSelector.tsx";
 
 export function TimeEditModal({
   open,
@@ -14,7 +15,6 @@ export function TimeEditModal({
   setState,
   onClose,
 }: IModalProps & IAppStateProps) {
-  const [showCalendar, setShowCalendar] = useState(false);
 
   const { startTime, endTime, startDate, endDate } = state.calendar;
 
@@ -31,25 +31,7 @@ export function TimeEditModal({
       <Typography variant="h6">Редактирование графика работы</Typography>
       <Box>
         <Typography>Даты</Typography>
-        <Button
-          endIcon={<CalendarTodayIcon />}
-          onClick={() => setShowCalendar(!showCalendar)}
-        >
-          {startDate && endDate
-            ? `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`
-            : "Выберите даты"}
-        </Button>
-        <Box sx={{ display: showCalendar ? "flex" : "none" }}>
-          <DatePicker
-            locale="ru"
-            selected={startDate}
-            onChange={onChange}
-            startDate={startDate}
-            endDate={endDate}
-            selectsRange
-            inline
-          />
-        </Box>
+        <DateSelector startDate={startDate} endDate={endDate} onChange={onChange} selectsRange={true}/>
       </Box>
       <Box>
         <Box>

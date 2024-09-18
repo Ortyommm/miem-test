@@ -31,30 +31,35 @@ function App() {
     projectsByDate: {
       reserve: [
         {
+          type: 'project',
           projectId: 858,
           participantsCount: 1,
           name: "DataFlow вычислительная система: Телекоммуникационная система суперкомпьютера",
           id: 0,
         },
         {
+          type: 'project',
           projectId: 858,
           participantsCount: 3,
           name: "Проект 2",
           id: 1,
         },
         {
+          type: 'project',
           projectId: 20,
           participantsCount: 4,
           name: "Проект 3",
           id: 2,
         },
         {
+          type: 'project',
           projectId: 858,
           participantsCount: 2,
           name: "Проект 4",
           id: 3,
         },
         {
+          type: 'project',
           projectId: 20,
           participantsCount: 1,
           name: "Проект 5",

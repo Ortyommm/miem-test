@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import {format} from "date-fns";
 
-export function Time({participantsCount}: {participantsCount: number}) {
+export function Time({timeFrom, timeTo}: {timeFrom: Date, timeTo: Date}) {
+    const timeFormat = (date: Date) => format(date, 'HH:mm')
+
   return (
     <Box
       sx={{
@@ -13,7 +16,7 @@ export function Time({participantsCount}: {participantsCount: number}) {
         alignSelf: "baseline",
       }}
     >
-      <Typography variant={"body2"}>10:00 - 10:25</Typography>{" "}
+      <Typography variant={"body2"}>{timeFormat(timeFrom)} - {timeFormat(timeTo)}</Typography>{" "}
     </Box>
   );
 }

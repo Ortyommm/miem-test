@@ -7,9 +7,11 @@ import { IAppStateProps } from "../../misc/types.ts";
 import { cloneDeep } from "lodash-es";
 import { addDays, isWithinInterval, parse } from "date-fns";
 import { uniqueDateFormat } from "../../misc/helpers.ts";
+import { BreaksModal } from "./components/BreaksModal.tsx";
 
 export function TimeEditor({ state, setState }: IAppStateProps) {
   const [openTimeEditModal, setOpenTimeEditModal] = useState(false);
+  const [openBreaksModal, setOpenBreaksModal] = useState(false);
 
   const onClose = () => {
     setOpenTimeEditModal(false);
@@ -30,7 +32,7 @@ export function TimeEditor({ state, setState }: IAppStateProps) {
         stateCopy.projectsByDate[key] = [];
       }
     });
-    setState(stateCopy)
+    setState(stateCopy);
   };
 
   return (
@@ -41,6 +43,13 @@ export function TimeEditor({ state, setState }: IAppStateProps) {
         state={state}
         setState={setState}
         onClose={onClose}
+      />
+      <BreaksModal
+        open={openBreaksModal}
+        setOpen={setOpenBreaksModal}
+        onClose={() => setOpenBreaksModal(false)}
+        state={state}
+        setState={setState}
       />
       <Box
         sx={{
@@ -62,6 +71,7 @@ export function TimeEditor({ state, setState }: IAppStateProps) {
           variant={"outlined"}
           size="small"
           startIcon={<AddOutlinedIcon />}
+          onClick={() => setOpenBreaksModal(true)}
         >
           Добавить перерыв
         </Button>
