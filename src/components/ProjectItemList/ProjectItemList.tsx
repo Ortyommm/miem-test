@@ -1,15 +1,12 @@
 import { IAppState } from "../../misc/types.ts";
-import { Dispatch, SetStateAction } from "react";
 import { addDays, format, intervalToDuration } from "date-fns";
-import { DayView } from "./components/DayView.tsx";
+import { DayView } from "./components/DayView/DayView.tsx";
 import { getStringByDate } from "../../misc/helpers.ts";
 
 export function ProjectItemList({
   state,
-  setState,
 }: {
   state: IAppState;
-  setState: Dispatch<SetStateAction<IAppState>>;
 }) {
   const getDateDiff = () =>
     intervalToDuration({

@@ -21,7 +21,6 @@ export interface IBreak {
 export interface IModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  onClose: () => void;
 }
 
 
@@ -38,3 +37,5 @@ export interface IAppStateProps {
   state: IAppState;
   setState: Dispatch<IAppState>;
 }
+
+export type ToggleSnackbarFunction = (newState: IAppState, oldState: IAppState) => void

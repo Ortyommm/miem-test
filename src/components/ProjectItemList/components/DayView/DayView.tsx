@@ -1,49 +1,11 @@
 import { List, Typography } from "@mui/material";
-import { ProjectItem } from "../../ProjectItem/ProjectItem.tsx";
-import { IBreak, IProject } from "../../../misc/types.ts";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { BreakItem } from "../../BreakItem/BreakItem.tsx";
-import { addMinutes } from "date-fns";
+import {getTimeFrom, getTimeTo} from "./helpers.ts";
+import {IBreak, IProject} from "../../../../misc/types.ts";
+import {ProjectItem} from "../../../ProjectItem/ProjectItem.tsx";
+import {BreakItem} from "../../../BreakItem/BreakItem.tsx";
 
-const getProjectDuration = (participantsCount: number) =>
-  20 + 5 * participantsCount;
 
-const getTimeFrom = (
-  items: (IProject | IBreak)[],
-  itemI: number,
-  startTime: Date,
-) => {
-  let timeFrom = startTime;
-
-  for (let i = 0; i < itemI; i++) {
-    const item = items[i];
-    if (item.type === "project") {
-      timeFrom = addMinutes(
-        timeFrom,
-        getProjectDuration((item as IProject).participantsCount),
-      );
-    } else {
-      timeFrom = addMinutes(timeFrom, (item as IBreak).duration);
-    }
-  }
-
-  return timeFrom;
-};
-
-const getTimeTo = (
-  items: (IProject | IBreak)[],
-  itemI: number,
-  startTime: Date,
-) => {
-  const timeFrom = getTimeFrom(items, itemI, startTime);
-  const item = items[itemI];
-  return addMinutes(
-    timeFrom,
-    item.type === "project"
-      ? getProjectDuration((item as IProject).participantsCount)
-      : (item as IBreak).duration,
-  );
-};
 
 export function DayView({
   heading,
@@ -58,13 +20,13 @@ export function DayView({
 }) {
   return (
     <>
-      <Typography variant={"h5"} sx={{ textAlign: "center" }}>
+      <Typography variant={"h5"} sx={{ textAlign: "center", mt: 5 }}>
         {heading}
       </Typography>
       <Droppable droppableId={droppableId}>
         {(provided) => (
           <List
-            sx={{ minHeight: 50 }}
+            sx={{ minHeight: 60, }}
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
@@ -91,7 +53,7 @@ export function DayView({
                   </Draggable>
                 );
               } else {
-                const { id, duration } = item as IBreak;
+                const { id } = item as IBreak;
 
                 return (
                   <Draggable key={id} draggableId={id.toString()} index={i}>
@@ -106,7 +68,6 @@ export function DayView({
                     )}
                   </Draggable>
                 );
-                //TODO add draggable
               }
             })}
             {provided.placeholder}

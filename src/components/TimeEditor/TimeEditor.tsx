@@ -3,37 +3,14 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import { TimeEditModal } from "./components/TimeEditModal.tsx";
-import { IAppStateProps } from "../../misc/types.ts";
-import { cloneDeep } from "lodash-es";
-import { addDays, isWithinInterval, parse } from "date-fns";
-import { uniqueDateFormat } from "../../misc/helpers.ts";
+import {IAppStateProps, ToggleSnackbarFunction} from "../../misc/types.ts";
 import { BreaksModal } from "./components/BreaksModal.tsx";
 
-export function TimeEditor({ state, setState }: IAppStateProps) {
+export function TimeEditor({ state, setState, toggleSnackbar }: IAppStateProps & {toggleSnackbar: ToggleSnackbarFunction}) {
   const [openTimeEditModal, setOpenTimeEditModal] = useState(false);
   const [openBreaksModal, setOpenBreaksModal] = useState(false);
 
-  const onClose = () => {
-    setOpenTimeEditModal(false);
-    const stateCopy = cloneDeep(state);
-    //Перемещаем проект в резерв, если он проходит в день, не находящимся в диапазоне допустимых дней
-    Object.keys(stateCopy.projectsByDate).forEach((key) => {
-      if (key === "reserve") return;
-      if (
-        !isWithinInterval(parse(key, uniqueDateFormat, new Date()), {
-          start: addDays(state.calendar.startDate, -1),
-          end: state.calendar.endDate,
-        })
-      ) {
-        stateCopy.projectsByDate.reserve = [
-          ...stateCopy.projectsByDate.reserve,
-          ...stateCopy.projectsByDate[key],
-        ];
-        stateCopy.projectsByDate[key] = [];
-      }
-    });
-    setState(stateCopy);
-  };
+
 
   return (
     <>
@@ -42,14 +19,14 @@ export function TimeEditor({ state, setState }: IAppStateProps) {
         setOpen={setOpenTimeEditModal}
         state={state}
         setState={setState}
-        onClose={onClose}
+        toggleSnackbar={toggleSnackbar}
       />
       <BreaksModal
         open={openBreaksModal}
         setOpen={setOpenBreaksModal}
-        onClose={() => setOpenBreaksModal(false)}
         state={state}
         setState={setState}
+        toggleSnackbar={toggleSnackbar}
       />
       <Box
         sx={{

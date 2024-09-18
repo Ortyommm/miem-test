@@ -4,6 +4,7 @@ import { ProjectItemPrimaryText } from "./components/ProjectItemPrimaryText.tsx"
 import { ProjectItemSecondaryText } from "./components/ProjectItemSecondaryText/ProjectItemSecondaryText.tsx";
 import { Ref } from "react";
 import {Time} from "../Time/Time.tsx";
+import {itemBoxShadow} from "../../misc/helpers.ts";
 
 export function ProjectItem(
   {
@@ -25,7 +26,8 @@ export function ProjectItem(
   } /*& DraggableProvidedDraggableProps & DraggableProvidedDragHandleProps*/,
 ) {
   return (
-    <ListItem {...rest} sx={{ background: "#fff" }} ref={refProp}>
+    <ListItem {...rest} sx={{ background: "#fff", mb: 1, borderRadius: 3, boxShadow: itemBoxShadow
+    }} ref={refProp}>
       <Time timeFrom={timeFrom} timeTo={timeTo} />
       <ListItemText
         primary={<ProjectItemPrimaryText projectId={projectId} name={name} />}

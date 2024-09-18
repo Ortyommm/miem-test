@@ -1,62 +1,107 @@
 import { StyledModal } from "../../StyledModal.tsx";
-import { IAppStateProps, IModalProps } from "../../../misc/types.ts";
-import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
-import DatePicker from "react-datepicker";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { IAppStateProps, IModalProps, ToggleSnackbarFunction } from "../../../misc/types.ts";
+import { Alert, Box, Button } from "@mui/material";
 import "react-datepicker/dist/react-datepicker.css";
 import { TimeField } from "@mui/x-date-pickers";
-import {DateSelector} from "../../DateSelector/DateSelector.tsx";
+import { DateSelector } from "../../DateSelector/DateSelector.tsx";
+import { useState } from "react";
+import { stateDateProtection } from "../../../misc/helpers.ts";
 
 export function TimeEditModal({
   open,
   setOpen,
   state,
   setState,
-  onClose,
-}: IModalProps & IAppStateProps) {
-
+  toggleSnackbar,
+}: IModalProps & IAppStateProps & { toggleSnackbar: ToggleSnackbarFunction }) {
   const { startTime, endTime, startDate, endDate } = state.calendar;
 
-  const onChange = (dates: [Date|null, Date|null]) => {
+  const [localStartDate, setLocalStartDate] = useState<Date | null>(startDate);
+  const [localEndDate, setLocalEndDate] = useState<Date | null>(endDate);
+  const [localStartTime, setLocalStartTime] = useState<Date | null>(startTime);
+  const [localEndTime, setLocalEndTime] = useState<Date | null>(endTime);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
-    setState({
+    setLocalStartDate(start);
+    setLocalEndDate(end);
+  };
+
+  const onSave = () => {
+    if (!localStartDate || !localEndDate || !localStartTime || !localEndTime) {
+      setErrorMessage("Введите все поля");
+      return;
+    }
+
+    if (localStartTime.valueOf() >= localEndTime.valueOf()) {
+      setErrorMessage('Время "С" не может быть позже или равно времени "До"');
+      return;
+    }
+
+    setErrorMessage("");
+
+    setOpen(false);
+    const stateShallowCopy = {
       ...state,
-      calendar: { ...state.calendar, startDate: start, endDate: end },
-    });
+      calendar: {
+        ...state.calendar,
+        startTime: localStartTime || startTime,
+        endTime: localEndTime || endTime,
+        startDate: localStartDate || startDate,
+        endDate: localEndDate || endDate,
+      },
+    };
+    //Перемещаем проект в резерв, если он проходит в день, не находящимся в диапазоне допустимых дней
+    const updatedState = stateDateProtection(stateShallowCopy);
+    toggleSnackbar(updatedState, stateShallowCopy);
+    setState(updatedState);
+  };
+
+  const onCancel = () => {
+    setLocalStartDate(startDate);
+    setLocalEndDate(endDate);
+    setLocalStartTime(startTime);
+    setLocalEndTime(endTime);
   };
 
   return (
-    <StyledModal open={open} setOpen={setOpen} onClose={onClose}>
-      <Typography variant="h6">Редактирование графика работы</Typography>
+    <StyledModal open={open} setOpen={setOpen} heading="Редактирование графика работы">
       <Box>
-        <Typography>Даты</Typography>
-        <DateSelector startDate={startDate} endDate={endDate} onChange={onChange} selectsRange={true}/>
+        <DateSelector
+          startDate={localStartDate}
+          endDate={localEndDate}
+          onChange={onChange}
+          selectsRange={true}
+        />
       </Box>
-      <Box>
-        <Box>
-          <TimeField
-            label="С"
-            value={startTime}
-            onChange={() =>
-              setState({
-                ...state,
-                calendar: { ...state.calendar, startTime },
-              })
-            }
-          />
-          <TimeField
-            label="До"
-            value={endTime}
-            onChange={() =>
-              setState({
-                ...state,
-                calendar: { ...state.calendar, endTime },
-              })
-            }
-          />
-        </Box>
+      <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+        <TimeField
+          label="С"
+          value={localStartTime}
+          onChange={(date) => {
+            setLocalStartTime(date);
+          }}
+        />
+        <TimeField
+          label="До"
+          value={localEndTime}
+          onChange={(date) => {
+            setLocalEndTime(date);
+          }}
+        />
       </Box>
+      <Box sx={{ mt: 2 }}>
+        <Button onClick={onSave} variant="contained">
+          Сохранить
+        </Button>
+        <Button onClick={onCancel}>Сбросить</Button>
+      </Box>
+      {errorMessage && (
+        <Alert sx={{ mt: 2 }} severity="error">
+          {errorMessage}
+        </Alert>
+      )}
     </StyledModal>
   );
 }

@@ -1,7 +1,8 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import DatePicker from "react-datepicker";
 import { useEffect, useState } from "react";
+import { getStringByDate } from "../../misc/helpers.ts";
 
 export function DateSelector(
   props:
@@ -22,23 +23,24 @@ export function DateSelector(
 
   const [showCalendar, setShowCalendar] = useState(false);
   useEffect(() => {
-      //Close calendar after date select
+    //Close calendar after date select
     if (!selectsRange) setShowCalendar(false);
   }, [startDate]);
 
-
   const getDateText = () => {
     if (selectsRange && startDate && endDate) {
-      return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+      return `${getStringByDate(startDate)} - ${getStringByDate(endDate)}`;
     }
     if (selectsRange) return "Выберите даты";
-    if (startDate) return `${startDate.toLocaleDateString()}`;
+    if (startDate) return `${getStringByDate(startDate)}`;
     return "Выберите дату";
   };
 
   return (
-    <>
+    <Box>
+      <Typography variant="body1">{selectsRange ? "Даты:" : "Дата:"}</Typography>
       <Button
+        sx={{ pl: 0 }}
         endIcon={<CalendarTodayIcon />}
         onClick={() => setShowCalendar(!showCalendar)}
       >
@@ -56,14 +58,9 @@ export function DateSelector(
             inline
           />
         ) : (
-          <DatePicker
-            locale="ru"
-            selected={startDate}
-            onChange={onChange}
-            inline
-          />
+          <DatePicker locale="ru" selected={startDate} onChange={onChange} inline />
         )}
-      </Box>{" "}
-    </>
+      </Box>
+    </Box>
   );
 }
