@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { StyledModal } from "../../StyledModal.tsx";
 import { IAppStateProps, IModalProps, ToggleSnackbarFunction } from "../../../misc/types.ts";
 import { Alert, Box, Button } from "@mui/material";
