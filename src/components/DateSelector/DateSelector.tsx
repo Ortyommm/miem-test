@@ -8,15 +8,15 @@ export function DateSelector(
   props:
     | {
         selectsRange: false;
-        startDate: Date ;
+        startDate: Date;
         endDate?: undefined;
         onChange: (dates: Date | null) => void;
       }
     | {
         selectsRange: true;
         onChange: (dates: [Date | null, Date | null]) => void;
-        startDate: Date ;
-        endDate: Date ;
+        startDate: Date;
+        endDate: Date | null;
       },
 ) {
   const { startDate, endDate, selectsRange, onChange } = props;
@@ -53,7 +53,7 @@ export function DateSelector(
             selected={startDate}
             onChange={onChange}
             startDate={startDate}
-            endDate={endDate}
+            endDate={endDate || undefined}
             selectsRange
             inline
           />

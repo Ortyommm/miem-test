@@ -1,12 +1,11 @@
-//@ts-nocheck
 import { StyledModal } from "../../StyledModal.tsx";
 import { IAppStateProps, IModalProps, ToggleSnackbarFunction } from "../../../misc/types.ts";
 import { Alert, Box, Button } from "@mui/material";
 import "react-datepicker/dist/react-datepicker.css";
-import { TimeField } from "@mui/x-date-pickers";
 import { DateSelector } from "../../DateSelector/DateSelector.tsx";
 import { useState } from "react";
 import { stateDateProtection } from "../../../misc/helpers.ts";
+import { TimeField } from "@mui/x-date-pickers";
 
 export function TimeEditModal({
   open,
@@ -17,15 +16,16 @@ export function TimeEditModal({
 }: IModalProps & IAppStateProps & { toggleSnackbar: ToggleSnackbarFunction }) {
   const { startTime, endTime, startDate, endDate } = state.calendar;
 
-  const [localStartDate, setLocalStartDate] = useState<Date|null>(startDate);
-  const [localEndDate, setLocalEndDate] = useState<Date|null>(endDate);
+  const [localStartDate, setLocalStartDate] = useState<Date>(startDate);
+  const [localEndDate, setLocalEndDate] = useState<Date | null>(endDate);
   const [localStartTime, setLocalStartTime] = useState<Date>(startTime);
   const [localEndTime, setLocalEndTime] = useState<Date>(endTime);
   const [errorMessage, setErrorMessage] = useState("");
 
   const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
-    setLocalStartDate(start);
+    //For typescript
+    if (start) setLocalStartDate(start);
     setLocalEndDate(end);
   };
 
