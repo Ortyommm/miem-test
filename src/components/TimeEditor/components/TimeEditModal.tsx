@@ -29,17 +29,17 @@ export function TimeEditModal({
   };
 
   const onSave = () => {
-    // if (!localStartDate || !localEndDate || !localStartTime || !localEndTime) {
-    //   setErrorMessage("Введите все поля");
-    //   return;
-    // }
-    //
-    // if (localStartTime.valueOf() >= localEndTime.valueOf()) {
-    //   setErrorMessage('Время "С" не может быть позже или равно времени "До"');
-    //   return;
-    // }
-    //
-    // setErrorMessage("");
+    if (!localStartDate || !localEndDate || !localStartTime || !localEndTime) {
+      setErrorMessage("Введите все поля");
+      return;
+    }
+
+    if (localStartTime.valueOf() >= localEndTime.valueOf()) {
+      setErrorMessage('Время "С" не может быть позже или равно времени "До"');
+      return;
+    }
+
+    setErrorMessage("");
 
     setOpen(false);
     const stateShallowCopy = {
