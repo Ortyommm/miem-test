@@ -16,31 +16,30 @@ export function TimeEditModal({
 }: IModalProps & IAppStateProps & { toggleSnackbar: ToggleSnackbarFunction }) {
   const { startTime, endTime, startDate, endDate } = state.calendar;
 
-  const [localStartDate, setLocalStartDate] = useState<Date>(startDate);
-  const [localEndDate, setLocalEndDate] = useState<Date>(endDate);
+  const [localStartDate, setLocalStartDate] = useState<Date|null>(startDate);
+  const [localEndDate, setLocalEndDate] = useState<Date|null>(endDate);
   const [localStartTime, setLocalStartTime] = useState<Date>(startTime);
   const [localEndTime, setLocalEndTime] = useState<Date>(endTime);
   const [errorMessage, setErrorMessage] = useState("");
 
   const onChange = (dates: [Date | null, Date | null]) => {
     const [start, end] = dates;
-    if (!start || !end) return;
     setLocalStartDate(start);
     setLocalEndDate(end);
   };
 
   const onSave = () => {
-    if (!localStartDate || !localEndDate || !localStartTime || !localEndTime) {
-      setErrorMessage("Введите все поля");
-      return;
-    }
-
-    if (localStartTime.valueOf() >= localEndTime.valueOf()) {
-      setErrorMessage('Время "С" не может быть позже или равно времени "До"');
-      return;
-    }
-
-    setErrorMessage("");
+    // if (!localStartDate || !localEndDate || !localStartTime || !localEndTime) {
+    //   setErrorMessage("Введите все поля");
+    //   return;
+    // }
+    //
+    // if (localStartTime.valueOf() >= localEndTime.valueOf()) {
+    //   setErrorMessage('Время "С" не может быть позже или равно времени "До"');
+    //   return;
+    // }
+    //
+    // setErrorMessage("");
 
     setOpen(false);
     const stateShallowCopy = {
