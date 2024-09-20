@@ -31,8 +31,13 @@ export function BreaksModal({
       return;
     }
 
-    if(+hours === 0 && +minutes === 0) {
+    if (+hours === 0 && +minutes === 0) {
       setErrorMessage("Введите время");
+      return;
+    }
+
+    if (parseInt(hours) !== parseFloat(hours) || parseInt(minutes) !== parseFloat(minutes)) {
+      setErrorMessage("Введите целое значение");
       return;
     }
 
@@ -44,8 +49,8 @@ export function BreaksModal({
     setErrorMessage("");
 
     setOpen(false);
-    setHours('0')
-    setMinutes('0')
+    setHours("0");
+    setMinutes("0");
     const stateCopy = cloneDeep(state);
     const { projectsByDate } = stateCopy;
     const key = getStringByDate(startDate);
